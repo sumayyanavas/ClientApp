@@ -1,0 +1,40 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+@model ClientApp.Models.LoginModel
+
+
+<h1> Login </h1>
+
+    @using (Html.BeginForm())
+    {
+        <div class="form-group">
+          
+        </div>
+        @Html.AntiForgeryToken()
+        <div class="form-horizontal">
+            <hr />
+            @Html.ValidationSummary(true, "", new {@class = "text-danger"})
+            <div class="form-group ">
+
+                @Html.LabelFor(model => model.UserName, htmlAttributes: new {@class = "control-label col-md-2"})
+                @Html.EditorFor(model => model.UserName)*
+                @Html.ValidationMessageFor(model => model.UserName)
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Password, htmlAttributes: new {@class = "control-label col-md-2"})
+                @Html.EditorFor(model => model.Password) *
+                @Html.ValidationMessageFor(model => model.Password)
+
+            </div>
+            @Html.AntiForgeryToken()
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Login" class="btn btn-default"/>
+                </div>
+            </div>
+
+        </div>
+        
+    }

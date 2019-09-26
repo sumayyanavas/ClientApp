@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="TestDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="ClientDetail">
+    <Key>
+      <PropertyRef Name="ClientId" />
+    </Key>
+    <Property Name="ClientId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ClientName" Type="varchar" MaxLength="50" />
+    <Property Name="Address" Type="varchar(max)" />
+    <Property Name="PhoneNumber" Type="varchar" MaxLength="50" />
+    <Property Name="UserId" Type="int" Nullable="false" />
+    <Property Name="Image" Type="varchar(max)" />
+  </EntityType>
+  <EntityType Name="LoginInfo">
+    <Key>
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="UserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserName" Type="nvarchar" MaxLength="20" />
+    <Property Name="Password" Type="nvarchar" MaxLength="20" />
+    <Property Name="LastLoginDate" Type="datetime" />
+  </EntityType>
+  <Association Name="FK_ClientDetail_LoginInfo">
+    <End Role="LoginInfo" Type="Self.LoginInfo" Multiplicity="1" />
+    <End Role="ClientDetail" Type="Self.ClientDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="LoginInfo">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="ClientDetail">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="TestDBModelStoreContainer">
+    <EntitySet Name="ClientDetail" EntityType="Self.ClientDetail" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="LoginInfo" EntityType="Self.LoginInfo" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_ClientDetail_LoginInfo" Association="Self.FK_ClientDetail_LoginInfo">
+      <End Role="LoginInfo" EntitySet="LoginInfo" />
+      <End Role="ClientDetail" EntitySet="ClientDetail" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

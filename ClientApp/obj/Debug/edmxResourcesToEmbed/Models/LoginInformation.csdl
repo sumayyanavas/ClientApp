@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="TestDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="LoginInfo">
+    <Key>
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="UserId" Type="Int32" Nullable="false" />
+    <Property Name="UserName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Password" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="LastLoginDate" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="ClientDetails" Relationship="TestDBModel.FK_ClientDetail_LoginInfo" FromRole="LoginInfo" ToRole="ClientDetail" />
+  </EntityType>
+  <EntityContainer Name="TestDBEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="LoginInfoes" EntityType="Self.LoginInfo" />
+    <EntitySet Name="ClientDetails" EntityType="TestDBModel.ClientDetail" />
+    <AssociationSet Name="FK_ClientDetail_LoginInfo" Association="TestDBModel.FK_ClientDetail_LoginInfo">
+      <End Role="LoginInfo" EntitySet="LoginInfoes" />
+      <End Role="ClientDetail" EntitySet="ClientDetails" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="ClientDetail">
+    <Key>
+      <PropertyRef Name="ClientId" />
+    </Key>
+    <Property Name="ClientId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ClientName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="PhoneNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="UserId" Type="Int32" Nullable="false" />
+    <Property Name="Image" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="LoginInfo" Relationship="TestDBModel.FK_ClientDetail_LoginInfo" FromRole="ClientDetail" ToRole="LoginInfo" />
+  </EntityType>
+  <Association Name="FK_ClientDetail_LoginInfo">
+    <End Type="TestDBModel.LoginInfo" Role="LoginInfo" Multiplicity="1" />
+    <End Type="TestDBModel.ClientDetail" Role="ClientDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="LoginInfo">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="ClientDetail">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>
